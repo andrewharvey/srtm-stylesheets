@@ -1,0 +1,49 @@
+{
+  "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+  "Stylesheet": [
+    "contours.mss"
+  ],
+  "Layer": [
+    {
+      "geometry": "linestring",
+      "id": "contour-10m",
+      "name": "contour-10m",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "class": "contour",
+      "Datasource": {
+        "type": "postgis",
+        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm3_contours_10m\n) AS contours_10m",
+        "geometry_field": "wkb_geometry",
+        "extent": "15584682.3279371,-4439164.86536967,17102956.5069292,-3123419.69220716"
+      }
+    },
+    {
+      "geometry": "linestring",
+      "id": "contour-50m",
+      "name": "contour-50m",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "class": "contour",
+      "Datasource": {
+        "type": "postgis",
+        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm3_contours_50m\n) AS contours_50m",
+        "geometry_field": "wkb_geometry",
+        "extent": "15584682.3279371,-4439164.86536967,17102956.5069292,-3123419.69220716"
+      }
+    },
+    {
+      "geometry": "linestring",
+      "id": "contour-250m",
+      "name": "contour-250m",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "class": "contour",
+      "Datasource": {
+        "type": "postgis",
+        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm3_contours_250m\n) AS contours_250m",
+        "geometry_field": "wkb_geometry",
+        "extent": "15584682.3279371,-4439164.86536967,17102956.5069292,-3123419.69220716"
+      }
+    }
+  ],
+  "name": "srtm3-contours",
+  "description": "SRTM3 Contours Stylesheet"
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    To the extent possible under law, the person who associated CC0
+    with this work has waived all copyright and related or neighboring
+    rights to this work.
+    http://creativecommons.org/publicdomain/zero/1.0/
+-->
+<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
+
+<!-- Later mapnik versions use comp-op rather than mode -->
+<Style name="srtm3-slopeshade">
+  <Rule>
+    <RasterSymbolizer scaling="bilinear" opacity="0.5" mode="multiply">
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="srtm3-hillshade">
+  <Rule>
+    <RasterSymbolizer scaling="bilinear" opacity="0.7" mode="multiply">
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="srtm3-color-relief">
+  <Rule>
+    <RasterSymbolizer scaling="bilinear">
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+
+<Layer name="srtm3-color-relief">
+  <StyleName>srtm3-color-relief</StyleName>
+  <Datasource>
+    <Parameter name="file">layers/srtm3_color_relief.tiff</Parameter>
+    <Parameter name="type">gdal</Parameter>
+  </Datasource>
+</Layer>
+<Layer name="srtm3-hillshade">
+  <StyleName>srtm3-hillshade</StyleName>
+  <Datasource>
+    <Parameter name="file">layers/srtm3_hillshade.tiff</Parameter>
+    <Parameter name="type">gdal</Parameter>
+  </Datasource>
+</Layer>
+<Layer name="srtm3-slopeshade">
+  <StyleName>srtm3-slopeshade</StyleName>
+  <Datasource>
+    <Parameter name="file">layers/srtm3_slopeshade.tiff</Parameter>
+    <Parameter name="type">gdal</Parameter>
+  </Datasource>
+</Layer>
+
+</Map>

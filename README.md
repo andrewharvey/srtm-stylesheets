@@ -4,6 +4,15 @@ DEM data, gdaldem based stylesheets for creating shaded relief maps,
 Mapnik stylesheets for making contours maps, and TileStache configuration
 for sandwich the shaded relief and contour maps.
 
+![SRTM3 Hillshaded, Color Relief Contour Map](//andrewharvey4.files.wordpress.com/2012/10/srtm3-1.png)
+
+The aim of the project is to produce a free and open source repeatable workflow
+for visualising worldwide elevation data.
+
+While usable on its own, it was also designed to be a base style which could be
+built upon to create other maps with more features like place names, roads,
+rivers etc.
+
 # License
 With the exception of stylesheets/configure.py which is 3-clause BSD
 licensed, all files within this repository are licensed by the author,

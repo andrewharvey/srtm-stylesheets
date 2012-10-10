@@ -23,7 +23,7 @@ states that "NASA material is not protected by copyright unless noted".
 To run through all the steps provided by these script you will need,
 
     wget, unzip, xz-utils, gdal-bin, postgresql-client, postgis, carto, tilestache,
-    libmapnik | libmapnik2
+    libmapnik | libmapnik2, fonts-sil-gentium-basic
 
 ## Downloading SRTM data
 

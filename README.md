@@ -75,10 +75,10 @@ individual .hgt tiles to glue together.
     ./scripts/07-shaded-relief.sh [SRTM3_Continent]
 
 Keep in mind that the hypsometric tint values are defined in
-`srtm3-color-ramp.gdaldem.txt`. In the first column you have the elevation
-value in meters. For now, the default values here are specifically scaled
-for Australia. I'm not sure of the best approach for creating global values
-so that is up to you.
+`stylesheets/color-ramps/srtm3-Continent-color-ramp.gdaldem.txt`. In the first
+column you have the elevation value in meters. I've only created a color ramp
+specifically suited for the highest point in Australia. I'm not sure of the
+best approach for applying this on a global scale.
 
 ### Loading the contours
 You will need a PostgreSQL database set up somewhere with the PostGIS

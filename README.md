@@ -1,8 +1,8 @@
 # About
 This package contains a set of shell scripts for working with NASA SRTM
 DEM data, gdaldem based stylesheets for creating shaded relief maps,
-Mapnik stylesheets for making contours maps, and TileStache configuration
-for sandwich the shaded relief and contour maps.
+Mapnik stylesheets for making contours maps, and a TileStache configuration
+for sandwiching the shaded relief and contour maps.
 
 ![SRTM3 Hillshaded, Color Relief Contour Map](//andrewharvey4.files.wordpress.com/2012/10/srtm3-1.png)
 

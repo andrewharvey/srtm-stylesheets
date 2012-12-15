@@ -74,6 +74,9 @@ The last four parameters are the bounds we will use for the mosaic. You
 can only use integer values as they are simply used to select which
 individual .hgt tiles to glue together.
 
+If you are merging a large area you may need to add -co BIGTIFF=YES to the
+gdal_merge command.
+
 #### Hill shading and color relief (hypsometric tints)
 
     ./scripts/07-shaded-relief.sh [SRTM3_Continent]

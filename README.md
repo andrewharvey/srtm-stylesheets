@@ -91,8 +91,11 @@ best approach for applying this on a global scale.
 You will need a PostgreSQL database set up somewhere with the PostGIS
 extensions installed.
 
-Then make sure you set your [PG* environment variables](http://www.postgresql.org/docs/current/static/libpq-envars.html)
-(especially PGDATABASE which is required), then run,
+Then make sure you set your [PG* environment variables](http://www.postgresql.org/docs/current/static/libpq-envars.html), for example,
+
+    export PGDATABASE=srtm
+
+then run,
 
     ./scripts/05-contour-tiles.sh lon0 lon1 lat0 lat1
 

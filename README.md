@@ -94,7 +94,7 @@ extensions installed.
 Then make sure you set your [PG* environment variables](http://www.postgresql.org/docs/current/static/libpq-envars.html)
 (especially PGDATABASE which is required), then run,
 
-    ./scripts/05-contour-tiles.sh [SRTM3_Continent] lon0 lon1 lat0 lat1
+    ./scripts/05-contour-tiles.sh lon0 lon1 lat0 lat1
 
 This will convert the DEM into contours and load them into a PostgreSQL
 database.

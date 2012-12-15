@@ -51,6 +51,10 @@ re-compress using xz to save space using,
 
     ./scripts/03-rexz.sh
 
+Which you can later uncompress again using,
+
+    ./scripts/03b-unxz.sh
+
 ## Grunt work
 If you have made it this far then all the data is prepared and ready for
 the real grunt work. The are two bits of processing we do. Preparing the

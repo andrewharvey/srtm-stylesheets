@@ -50,4 +50,4 @@ done
 echo "Planning to merge $counter files."
 
 rm -rf $merged
-nice gdal_merge.py -o $merged -co COMPRESS=DEFLATE -co ZLEVEL=9 $files
+nice gdal_merge.py -o $merged -co BIGTIFF=YES -co COMPRESS=DEFLATE -co ZLEVEL=9 $files

@@ -38,6 +38,7 @@ fi
 counter=0
 for e in `seq $e0 $e1` ; do
   for n in `seq $n0 $n1` ; do
+    # FIXME if negative then use W or S
     echo "${base}/S${n}E${e}.hgt"
     if [ -e "${base}/S${n}E${e}.hgt" ] ; then
       files="${files} ${base}/S${n}E${e}.hgt"

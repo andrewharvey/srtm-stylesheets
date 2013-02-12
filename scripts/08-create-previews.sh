@@ -52,9 +52,9 @@ function render {
   echo -n "."
 
   convert ${preview}${output}_base.png ${preview}${output}_contour.png \
-      -composite -format png ${preview}${output}.png
+      -composite -quality 90 ${preview}${output}.jpg
 
-  echo " saved as ${preview}${output}.png"
+  echo " saved as ${preview}${output}.jpg"
 }
 
 #       centrex   centrey  z width hight name

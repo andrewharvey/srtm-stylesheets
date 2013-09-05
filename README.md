@@ -37,8 +37,8 @@ states that "NASA material is not protected by copyright unless noted".
 ## Dependencies
 To run through all the steps provided by these script you will need,
 
-    wget, unzip, xz-utils, gdal-bin, postgresql-client, postgis, carto, tilestache,
-    libmapnik | libmapnik2, fonts-sil-gentium-basic
+    wget unzip xz-utils gdal-bin postgresql-client postgis carto tilestache
+    libmapnik|libmapnik2 fonts-sil-gentium-basic python-gdal
 
 ## Downloading SRTM data
 

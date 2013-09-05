@@ -75,8 +75,10 @@ The last four parameters are the bounds we will use for the mosaic. You
 can only use integer values as they are simply used to select which
 individual .hgt tiles to glue together.
 
-If you are merging a large area you may need to add -co BIGTIFF=YES to the
-gdal_merge command.
+An additional processing step is also run as part of this script to fill the
+voids in the data. However you need to apply this patch
+http://trac.osgeo.org/gdal/ticket/4464 to your gdal_fillnodata.py script for
+this to work.
 
 #### Hill shading and color relief (hypsometric tints)
 

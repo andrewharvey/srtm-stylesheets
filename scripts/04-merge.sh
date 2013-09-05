@@ -22,7 +22,8 @@ fi
 
 
 # filename of output single merged file
-merged=SRTM3_$continent.tiff
+merged=SRTM3_${continent}.tiff
+filled=SRTM3_${continent}_filled.tiff
 
 if [ -z $5 ] ; then
   echo "Usage: $0 [SRTM3_Continent] lon0 lon1 lat0 lat1"
@@ -47,7 +48,22 @@ for e in `seq $e0 $e1` ; do
   done
 done
 
-echo "Planning to merge $counter files."
+echo "Merging $counter files..."
 
 rm -rf $merged
 nice gdal_merge.py -o $merged -co BIGTIFF=YES -co COMPRESS=DEFLATE -co ZLEVEL=9 $files
+
+# check we have the patched gdal_fillnodata.py script
+cat `which gdal_fillnodata.py` | grep "\-srcnodata value" > /dev/null
+if [ $? -eq 0 ] ; then
+    echo "Removing voids..."
+    nice gdal_fillnodata.py -srcnodata -32768 $merged $filled
+
+    # just keep the one void filled variant
+    rm -rf $merged
+    mv $filled $merged
+else
+    echo "It does not appear that you have the patch at
+http://trac.osgeo.org/gdal/ticket/4464 applied. Without it, the voids cannot be
+filled."
+fi

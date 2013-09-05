@@ -159,3 +159,15 @@ https://gist.github.com/andrewharvey/1290744 in your PATH and the ImageMagick
 program convert.
 
 There is a [live preview of this sandwiched stylesheet](http://tianjara.net/map#srtm3/8/-34.003/151.125).
+
+# Cleaning up
+There are some files you can remove to save some space.
+
+    # remove the original zipped hgt files we downloaded from USGS
+    rm -rf dds.cr.usgs.gov
+
+    # remove the unzipped hgt files (if you want you can keep a .tar.xz)
+    rm -rf SRTM3
+
+    # if you no longer need the single large DEM but are just using the layers/
+    rm -rf SRTM3*.tiff

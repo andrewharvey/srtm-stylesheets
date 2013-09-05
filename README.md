@@ -154,7 +154,7 @@ layers and the sandwiched layer using,
     ./scripts/08-create-previews.sh
 
 Be aware that for this you will need
-https://gist.github.com/andrewharvey/1290744 in your PATH and the ImageMagick
+https://gist.github.com/andrewharvey/1290744 in your $PATH and the ImageMagick
 program convert.
 
 There is a [live preview of this sandwiched stylesheet](http://tianjara.net/map#srtm3/8/-34.003/151.125).

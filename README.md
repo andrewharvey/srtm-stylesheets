@@ -1,8 +1,8 @@
 # About
-This package contains a set of shell scripts for working with NASA SRTM
-DEM data, gdaldem based stylesheets for creating shaded relief maps,
-Mapnik stylesheets for making contours maps, and a TileStache configuration
-for sandwiching the shaded relief and contour maps.
+This package contains a set of shell scripts for working with NASA SRTM DEM
+data, gdaldem based stylesheets for creating shaded relief and/or hypsometric
+tinted maps, Mapnik stylesheets for making contours maps and a TileStache
+configuration for sandwiching or compositing the shaded relief and contour maps.
 
 ![SRTM3 Hillshaded, Color Relief Contour
 Map](http://tianjara.net/hosted/srtm3-stylesheet-git-preview.png)
@@ -10,9 +10,14 @@ Map](http://tianjara.net/hosted/srtm3-stylesheet-git-preview.png)
 The aim of the project is to produce a free and open source repeatable workflow
 for visualising worldwide elevation data.
 
-While usable on its own, it was also designed to be a base style which could be
-built upon to create other maps with more features like place names, roads,
-rivers etc.
+This project should be useful if you want to,
+* automate the download of SRTM3 data
+* produce a void filled single large GeoTIFF DEM from SRTM3 HGT tiles
+* produce hill shaded, slope shaded, hypsometric and/or contour maps
+* have contours loaded into a PostgreSQL/PostGIS database for use in a GIS
+* have a simple general purpose elevation layer/map (default style included)
+
+All of the above use cases are accommodated for in these scripts.
 
 # License
 With the exception of stylesheets/configure.py which is 3-clause BSD
@@ -42,7 +47,7 @@ To run through all the steps provided by these script you will need,
 To determine the SRTM3_Region see the [region map](http://dds.cr.usgs.gov/srtm/version2_1/Documentation/Continent_def.gif),
 in combination with the [actual directory names](http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/) for these regions.
 
-## Unzipping
+## Unzipping downloads
 To unzip these downloads run,
 
     ./scripts/02-unzip.sh
@@ -63,7 +68,7 @@ vector contours and preparing the raster DEM. To create the final
 sandwiched map you will need to perform both steps, if not then you can
 just perform one.
 
-### Processing the raster DEM
+### Raster DEM processing
 
 #### Creating a mosaic DEM
 To avoid edge artefacts and to make the process simpler, we mosaic all
@@ -90,7 +95,7 @@ column you have the elevation value in meters. I've only created a color ramp
 specifically suited for the highest point in Australia. I'm not sure of the
 best approach for applying this on a global scale.
 
-### Loading the contours
+### Vector contour processing
 You will need a PostgreSQL database set up somewhere with the PostGIS
 extensions installed.
 

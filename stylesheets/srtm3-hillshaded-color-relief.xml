@@ -10,13 +10,13 @@
 <!-- Later mapnik versions use comp-op rather than mode -->
 <Style name="srtm3-slopeshade">
   <Rule>
-    <RasterSymbolizer scaling="bilinear" opacity="0.5" mode="multiply">
+    <RasterSymbolizer scaling="bilinear" opacity="0.5" comp-op="multiply">
     </RasterSymbolizer>
   </Rule>
 </Style>
 <Style name="srtm3-hillshade">
   <Rule>
-    <RasterSymbolizer scaling="bilinear" opacity="0.7" mode="multiply">
+    <RasterSymbolizer scaling="bilinear" opacity="0.7" comp-op="multiply">
     </RasterSymbolizer>
   </Rule>
 </Style>

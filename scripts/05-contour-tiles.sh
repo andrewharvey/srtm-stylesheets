@@ -24,6 +24,15 @@ else
   lat1=$4
 fi
 
+if [ $lat0 -gt $lat1 ] ; then
+  echo "lat0 must be <= lat1"
+  exit 1
+fi
+if [ $lon0 -gt $lon1 ] ; then
+  echo "lon0 must be <= lon1"
+  exit 1
+fi
+
 psql -c "DROP TABLE IF EXISTS srtm3;"
 
 for lon in `seq $lon0 $lon1` ; do

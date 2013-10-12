@@ -35,6 +35,15 @@ else
   lat1=$5
 fi
 
+if [ $lat0 -gt $lat1 ] ; then
+  echo "lat0 must be <= lat1"
+  exit 1
+fi
+if [ $lon0 -gt $lon1 ] ; then
+  echo "lon0 must be <= lon1"
+  exit 1
+fi
+
 # count how mange files we are planning to merge
 counter=0
 for lon in `seq $lon0 $lon1` ; do

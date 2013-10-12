@@ -63,13 +63,13 @@ done
 echo "Merging $counter files..."
 
 rm -rf $merged
-nice gdal_merge.py -o $merged -co BIGTIFF=YES -co COMPRESS=DEFLATE -co ZLEVEL=9 $files
+nice gdal_merge.py -o $merged -co BIGTIFF=YES -co COMPRESS=LZW $files
 
 # check we have the patched gdal_fillnodata.py script
 cat `which gdal_fillnodata.py` | grep "\-srcnodata value" > /dev/null
 if [ $? -eq 0 ] ; then
     echo "Removing voids..."
-    nice gdal_fillnodata.py -srcnodata -32768 $merged $filled
+    nice gdal_fillnodata.py -srcnodata -32768 $merged -of GTiff -co COMPRESS=LZW -co BIGTIFF=YES $filled
 
     # just keep the one void filled variant
     rm -rf $merged

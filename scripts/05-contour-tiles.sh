@@ -54,14 +54,30 @@ for lon in `seq $lon0 $lon1` ; do
       b=`basename $f .hgt`
       echo $b
 
+      working_tile="$f"
+      # check we have the patched gdal_fillnodata.py script
+      cat `which gdal_fillnodata.py` | grep "\-srcnodata value" > /dev/null
+      if [ $? -eq 0 ] ; then
+        echo "Removing voids."
+        filled_tile=`mktemp --suffix=.tiff`
+        gdal_fillnodata.py -srcnodata -32768 "$f" -of GTiff "$filled_tile"
+        working_tile="$filled_tile"
+      fi
+
       # create contours for this hgt file then save it as a shape file
       nice ionice -c 3 \
           gdal_contour \
             -i $interval \
             -a ele \
             -snodata -32768 \
-            "$f" \
+            "$working_tile" \
             SRTM3_Contour_Tiles/$b.shp
+
+      # remove the tile if it is a temporary one we just created
+      if [ ! -z "${filled_tile+xxx}" -a -e ${filled_tile} ]; then
+        # VAR $filled_tile is SET AND file exists
+        rm -f "$filled_tile"
+      fi
 
       # then load that shape file into PostgreSQL
       nice ionice -c 3 \

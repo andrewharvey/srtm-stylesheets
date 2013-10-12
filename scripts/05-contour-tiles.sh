@@ -35,6 +35,7 @@ fi
 
 psql -c "DROP TABLE IF EXISTS srtm3;"
 
+counter=0
 for lon in `seq $lon0 $lon1` ; do
   for lat in `seq $lat0 $lat1` ; do
     if [ $lon -lt 0 ] ; then
@@ -51,6 +52,7 @@ for lon in `seq $lon0 $lon1` ; do
     fi
     f="${base}/${ns}${lat}${ew}${lon}.hgt"
     if [ -e "$f" ] ; then
+      counter=$(($counter + 1))
       b=`basename $f .hgt`
       echo $b
 
@@ -94,6 +96,12 @@ for lon in `seq $lon0 $lon1` ; do
     fi
   done
 done
+
+if [ $counter -eq 0 ] ; then
+    echo "No suitable SRTM3 tiles were found in ${base}/ for the bounds you specified."
+else
+    echo "Imported contours for $counter SRTM3 tiles."
+fi
 
 rm -rf SRTM3_Contour_Tiles
 

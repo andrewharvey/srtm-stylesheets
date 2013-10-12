@@ -29,20 +29,32 @@ if [ -z $5 ] ; then
   echo "Usage: $0 [SRTM3_Continent] lon0 lon1 lat0 lat1"
   exit 1
 else
-  e0=$2
-  e1=$3
-  n0=$4
-  n1=$5
+  lon0=$2
+  lon1=$3
+  lat0=$4
+  lat1=$5
 fi
 
 # count how mange files we are planning to merge
 counter=0
-for e in `seq $e0 $e1` ; do
-  for n in `seq $n0 $n1` ; do
-    # FIXME if negative then use W or S
-    echo "${base}/S${n}E${e}.hgt"
-    if [ -e "${base}/S${n}E${e}.hgt" ] ; then
-      files="${files} ${base}/S${n}E${e}.hgt"
+for lon in `seq $lon0 $lon1` ; do
+  for lat in `seq $lat0 $lat1` ; do
+    if [ $lon -lt 0 ] ; then
+        ew='W'
+        lon=${lon#-} # remove sign
+    else
+        ew='E'
+    fi
+    if [ $lat -lt 0 ] ; then
+        ns='S'
+        lat=${lat#-} # remove sign
+    else
+        ns='N'
+    fi
+    hgt="${base}/${ns}${lat}${ew}${lon}.hgt"
+    echo "$hgt"
+    if [ -e "$hgt" ] ; then
+      files="${files} $hgt"
       counter=$(($counter + 1))
     fi
   done

@@ -18,17 +18,29 @@ if [ -z $4 ] ; then
   echo "Usage: $0 lon0 lon1 lat0 lat1"
   exit 1
 else
-  e0=$1
-  e1=$2
-  n0=$3
-  n1=$4
+  lon0=$1
+  lon1=$2
+  lat0=$3
+  lat1=$4
 fi
 
 psql -c "DROP TABLE IF EXISTS srtm3;"
 
-for e in `seq $e0 $e1` ; do
-  for n in `seq $n0 $n1` ; do
-    f="${base}/S${n}E${e}.hgt"
+for lon in `seq $lon0 $lon1` ; do
+  for lat in `seq $lat0 $lat1` ; do
+    if [ $lon -lt 0 ] ; then
+        ew='W'
+        lon=${lon#-} # remove sign
+    else
+        ew='E'
+    fi
+    if [ $lat -lt 0 ] ; then
+        ns='S'
+        lat=${lat#-} # remove sign
+    else
+        ns='N'
+    fi
+    f="${base}/${ns}${lat}${ew}${lon}.hgt"
     if [ -e "$f" ] ; then
       b=`basename $f .hgt`
       echo $b

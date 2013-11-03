@@ -22,14 +22,22 @@ DROP TABLE IF EXISTS srtm3_contours_250m;
 CREATE TABLE srtm3_contours_10m AS (
   SELECT * FROM srtm3 WHERE ((ele % 10) = 0)
 );
+VACUUM ANALYZE srtm3_contours_10m;
 
 CREATE TABLE srtm3_contours_50m AS (
   SELECT * FROM srtm3_contours_10m WHERE ((ele % 50) = 0)
 );
+VACUUM ANALYZE srtm3_contours_50m;
 
 CREATE TABLE srtm3_contours_250m AS (
   SELECT * FROM srtm3_contours_50m WHERE ((ele % 250) = 0)
 );
+VACUUM ANALYZE srtm3_contours_250m;
+
+-- this table isn't really needed anymore more
+-- if you are planning to use it for other things though you may want to
+-- keep it
+DROP TABLE srtm3;
 
 -- create geometry indexes
 CREATE INDEX srtm3_contours_10m_geom_idx
@@ -47,18 +55,9 @@ CREATE INDEX srtm3_contours_250m_geom_idx
   USING gist
   (wkb_geometry);
 
--- cleanup
-VACUUM ANALYZE srtm3_contours_10m;
-VACUUM ANALYZE srtm3_contours_50m;
-VACUUM ANALYZE srtm3_contours_250m;
 
 -- ensure we have the proper PostGIS metadata for these tables
 INSERT INTO geometry_columns(f_table_catalog, f_table_schema, f_table_name, f_geometry_column, coord_dimension, srid, "type") VALUES ('', 'public', 'srtm3_contours_10m', 'wkb_geometry', 2, 900916, 'LINESTRING');
 INSERT INTO geometry_columns(f_table_catalog, f_table_schema, f_table_name, f_geometry_column, coord_dimension, srid, "type") VALUES ('', 'public', 'srtm3_contours_50m', 'wkb_geometry', 2, 900916, 'LINESTRING');
 INSERT INTO geometry_columns(f_table_catalog, f_table_schema, f_table_name, f_geometry_column, coord_dimension, srid, "type") VALUES ('', 'public', 'srtm3_contours_250m', 'wkb_geometry', 2, 900916, 'LINESTRING');
-
--- this table isn't really needed anymore more
--- if you are planning to use it for other things though you may want to
--- keep it
-DROP TABLE srtm3;
 

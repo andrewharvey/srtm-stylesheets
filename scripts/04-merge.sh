@@ -47,13 +47,13 @@ fi
 # count how mange files we are planning to merge
 counter=0
 for lon in `seq $lon0 $lon1` ; do
+  if [ $lon -lt 0 ] ; then
+      ew='W'
+      lon=${lon#-} # remove sign
+  else
+      ew='E'
+  fi
   for lat in `seq $lat0 $lat1` ; do
-    if [ $lon -lt 0 ] ; then
-        ew='W'
-        lon=${lon#-} # remove sign
-    else
-        ew='E'
-    fi
     if [ $lat -lt 0 ] ; then
         ns='S'
         lat=${lat#-} # remove sign

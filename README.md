@@ -46,6 +46,9 @@ To run through all the steps provided by these script you will need,
 To determine the SRTM3_Region see the [region map](http://dds.cr.usgs.gov/srtm/version2_1/Documentation/Continent_def.gif),
 in combination with the [actual directory names](http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/) for these regions.
 
+The coordinates refer to the bottom left corner of the tile, or expressed
+differently the tile is in the top right quadrant referred to by the coordinate.
+
 ## Unzipping downloads
 To unzip these downloads run,
 

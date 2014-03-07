@@ -78,7 +78,7 @@ just perform one.
 To avoid edge artefacts and to make the process simpler, we mosaic all
 those 1 x 1 degree tiles into a single continent mosaic using,
 
-    ./scripts/04-merge.sh [SRTM3_Continent] lon0 lon1 lat0 lat1
+    ./scripts/04-merge.sh SRTM3_Continent lon0 lon1 lat0 lat1
 
 The last four parameters are the bounds we will use for the mosaic. You
 can only use integer values as they are simply used to select which
@@ -91,7 +91,7 @@ this to work.
 
 #### Hill shading and color relief (hypsometric tints)
 
-    ./scripts/07-shaded-relief.sh [SRTM3_Continent]
+    ./scripts/07-shaded-relief.sh SRTM3_Continent
 
 Keep in mind that the hypsometric tint values are defined in
 `stylesheets/color-ramps/srtm3-Continent-color-ramp.gdaldem.txt`. In the first

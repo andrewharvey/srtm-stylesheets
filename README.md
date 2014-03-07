@@ -41,10 +41,12 @@ To run through all the steps provided by these script you will need,
 
 ## Downloading SRTM data
 
-    ./scripts/01-download.sh [SRTM3_Region]
+    ./scripts/01-download.sh SRTM3_Region...
 
 To determine the SRTM3_Region see the [region map](http://dds.cr.usgs.gov/srtm/version2_1/Documentation/Continent_def.gif),
 in combination with the [actual directory names](http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/) for these regions.
+
+You can list multiple regions as arguments or just one.
 
 The coordinates refer to the bottom left corner of the tile, or expressed
 differently the tile is in the top right quadrant referred to by the coordinate.

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# This script will only download SRTM3 data as SRTM1 data isn't yet available in the same way.
+
 if [ -z $1 ] ; then
   echo "Usage: $0 [SRTM3_Region]..."
   exit 1

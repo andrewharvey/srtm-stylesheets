@@ -19,6 +19,12 @@ This project should be useful if you want to,
 
 All of the above use cases are accommodated for in these scripts.
 
+The SRTM data has been released at varying resolution. SRTM3 refers to the
+near global 3 arc-second product and SRTM1 the higher resolution 1 arc-second
+product. SRTM1 was only released to the public in late 2014 and is not listed
+on the public directory yet at dds.cr.usgs.gov/srtm. You can however download
+the files by navigating the website at http://earthexplorer.usgs.gov/.
+
 # License
 With the exception of stylesheets/configure.py which is 3-clause BSD
 licensed, all files within this repository are licensed by the author,
@@ -39,7 +45,7 @@ To run through all the steps provided by these script you will need,
 
     wget unzip xz-utils gdal-bin postgresql-client postgis carto tilestache libmapnik|libmapnik2 fonts-sil-gentium-basic python-gdal
 
-## Downloading SRTM data
+## Downloading SRTM3 data
 
     ./scripts/01-download.sh SRTM3_Region...
 
@@ -50,6 +56,9 @@ You can list multiple regions as arguments or just one.
 
 The coordinates refer to the bottom left corner of the tile, or expressed
 differently the tile is in the top right quadrant referred to by the coordinate.
+
+## Downloading SRTM1 data
+Presently you need to navigate and manually download scenes via  http://earthexplorer.usgs.gov/
 
 ## Unzipping downloads
 To unzip these downloads run,
@@ -78,7 +87,7 @@ just perform one.
 To avoid edge artefacts and to make the process simpler, we mosaic all
 those 1 x 1 degree tiles into a single continent mosaic using,
 
-    ./scripts/04-merge.sh SRTM3_Continent lon0 lon1 lat0 lat1
+    ./scripts/04-merge.sh SRTM1|SRTM3 SRTM_Continent lon0 lon1 lat0 lat1
 
 The last four parameters are the bounds we will use for the mosaic. You
 can only use integer values as they are simply used to select which
@@ -91,10 +100,10 @@ this to work.
 
 #### Hill shading and color relief (hypsometric tints)
 
-    ./scripts/07-shaded-relief.sh SRTM3_Continent
+    ./scripts/07-shaded-relief.sh SRTM1|SRTM3 SRTM_Continent
 
 Keep in mind that the hypsometric tint values are defined in
-`stylesheets/color-ramps/srtm3-Continent-color-ramp.gdaldem.txt`. In the first
+`stylesheets/color-ramps/srtm-Continent-color-ramp.gdaldem.txt`. In the first
 column you have the elevation value in meters. I've only created a color ramp
 specifically suited for the highest point in Australia. I'm not sure of the
 best approach for applying this on a global scale.
@@ -109,7 +118,7 @@ Then make sure you set your [PG* environment variables](http://www.postgresql.or
 
 then run,
 
-    ./scripts/05-contour-tiles.sh lon0 lon1 lat0 lat1
+    ./scripts/05-contour-tiles.sh SRTM1|SRTM3 lon0 lon1 lat0 lat1
 
 This will convert the DEM into contours and load them into a PostgreSQL
 database.
@@ -137,7 +146,7 @@ The contour style needs to be configured with,
 
     ./stylesheets/configure.py
 
-You can pass it paramaters --host, --port, --dbname, --user, --password.
+You can pass it parameters --host, --port, --dbname, --user, --password.
 
 When you run it, it will copy the `contours.template.mml` into
 `contours.mml` and fill in the new file with your configuration.

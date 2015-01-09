@@ -7,32 +7,33 @@
 # rights to this work.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-# where the HGT files are at
-base="SRTM3"
 
 # argument list of hgt files
 files=""
 
-continent=$1
+# where the HGT files are at
+base=$1
+
+continent=$2
 
 if [ -z $continent ] ; then
-  echo "Usage: $0 [SRTM3_Region]"
+  echo "Usage: $0 SRTM1|SRTM3 SRTM3_Region"
   exit 1
 fi
 
 
 # filename of output single merged file
-merged=SRTM3_${continent}.tiff
-filled=SRTM3_${continent}_filled.tiff
+merged=${base}_${continent}.tiff
+filled=${base}_${continent}_filled.tiff
 
-if [ -z $5 ] ; then
-  echo "Usage: $0 [SRTM3_Continent] lon0 lon1 lat0 lat1"
+if [ -z $6 ] ; then
+  echo "Usage: $0 SRTM1|SRTM3 SRTM3_Continent lon0 lon1 lat0 lat1"
   exit 1
 else
-  lon0=$2
-  lon1=$3
-  lat0=$4
-  lat1=$5
+  lon0=$3
+  lon1=$4
+  lat0=$5
+  lat1=$6
 fi
 
 if [ $lat0 -gt $lat1 ] ; then
@@ -60,10 +61,20 @@ for lon in `seq $lon0 $lon1` ; do
     else
         ns='N'
     fi
-    hgt="${base}/${ns}${lat}${ew}${lon}.hgt"
-    echo "$hgt"
-    if [ -e "$hgt" ] ; then
-      files="${files} $hgt"
+    if [ $base == "SRTM1" ] ; then
+        file="${ns}${lat}_${ew}${lon}_1arc_v3.bil"
+        file=`echo $file | tr 'A-Z' 'a-z'`
+        file="${base}/${file}"
+    elif [ $base == "SRTM3" ] ; then
+        file="${base}/${ns}${lat}${ew}${lon}.hgt"
+    else
+        echo "Usage: $0 SRTM1|SRTM3 [SRTM3_Region]"
+        echo "Argument 1 must be either SRTM1 or SRTM3"
+        exit 1
+    fi
+    echo "$file"
+    if [ -e "$file" ] ; then
+      files="${files} $file"
       counter=$(($counter + 1))
     fi
   done
@@ -73,6 +84,9 @@ echo "Merging $counter files..."
 
 rm -rf $merged
 nice gdal_merge.py -o $merged -co BIGTIFF=YES -co COMPRESS=LZW $files
+
+echo "Written $merged"
+
 
 # check we have the patched gdal_fillnodata.py script
 cat `which gdal_fillnodata.py` | grep "\-srcnodata value" > /dev/null
@@ -85,6 +99,6 @@ if [ $? -eq 0 ] ; then
     mv $filled $merged
 else
     echo "It does not appear that you have the patch at
-http://trac.osgeo.org/gdal/ticket/4464 applied. Without it, the voids cannot be
-filled."
+http://trac.osgeo.org/gdal/ticket/4464 applied. Hence any voids in
+SRTM3 data weren't filled."
 fi

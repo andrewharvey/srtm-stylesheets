@@ -12,7 +12,7 @@
       "class": "contour",
       "Datasource": {
         "type": "postgis",
-        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm3_contours_10m\n) AS contours_10m",
+        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm_contours_10m\n) AS contours_10m",
         "geometry_field": "wkb_geometry"
       }
     },
@@ -24,7 +24,7 @@
       "class": "contour",
       "Datasource": {
         "type": "postgis",
-        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm3_contours_50m\n) AS contours_50m",
+        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm_contours_50m\n) AS contours_50m",
         "geometry_field": "wkb_geometry"
       }
     },
@@ -36,11 +36,11 @@
       "class": "contour",
       "Datasource": {
         "type": "postgis",
-        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm3_contours_250m\n) AS contours_250m",
+        "table": "(\n SELECT wkb_geometry, ele\n FROM srtm_contours_250m\n) AS contours_250m",
         "geometry_field": "wkb_geometry"
       }
     }
   ],
-  "name": "srtm3-contours",
-  "description": "SRTM3 Contours Stylesheet"
+  "name": "srtm-contours",
+  "description": "SRTM Contours Stylesheet"
 }

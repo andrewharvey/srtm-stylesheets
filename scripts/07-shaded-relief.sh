@@ -9,15 +9,18 @@
 
 # This process follows http://mapbox.com/tilemill/docs/guides/terrain-data/
 
-continent=$1
+base=$1
+continent=$2
 
 if [ -z $continent ] ; then
-  echo "Usage: $0 [SRTM3_Region]"
+  echo "Usage: $0 SRTM1|SRTM3 [SRTM3_Region]"
   exit 1
 fi
 
-if [ ! -e stylesheets/color-ramps/srtm3-${continent}-color-ramp.gdaldem.txt ] ; then
-  echo "Could not find stylesheets/color-ramps/srtm3-${continent}-color-ramp.gdaldem.txt"
+base_lower=`echo "$base" | tr 'A-Z' 'a-z'`
+
+if [ ! -e stylesheets/color-ramps/srtm-${continent}-color-ramp.gdaldem.txt ] ; then
+  echo "Could not find stylesheets/color-ramps/srtm-${continent}-color-ramp.gdaldem.txt"
   echo ""
   echo "This file defines the color ramp used for the relief image of the DEM."
   echo ""
@@ -30,24 +33,24 @@ if [ ! -e stylesheets/color-ramps/srtm3-${continent}-color-ramp.gdaldem.txt ] ; 
 fi
 
 # reproject to slippy map projection
-gdalwarp -t_srs "EPSG:900913" -r near -of VRT SRTM3_$continent.tiff SRTM3_$continent-WebMercator.vrt
+gdalwarp -t_srs "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs" -r near -of VRT ${base}_$continent.tiff ${base}_$continent-WebMercator.vrt
 
 mkdir -p layers
 
 # make the color relief image
-nice gdaldem color-relief SRTM3_$continent-WebMercator.vrt stylesheets/color-ramps/srtm3-${continent}-color-ramp.gdaldem.txt layers/SRTM3_${continent}_color_relief.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
+nice gdaldem color-relief ${base}_$continent-WebMercator.vrt stylesheets/color-ramps/srtm-${continent}-color-ramp.gdaldem.txt layers/${base}_${continent}_color_relief.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
 
 # make the hillshaded greyscale image
-nice gdaldem hillshade SRTM3_$continent-WebMercator.vrt layers/SRTM3_${continent}_hillshade.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
+nice gdaldem hillshade ${base}_$continent-WebMercator.vrt layers/${base}_${continent}_hillshade.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
 
 # generate slope for the slopeshade
-nice gdaldem slope SRTM3_$continent-WebMercator.vrt layers/SRTM3_${continent}_slope.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
+nice gdaldem slope ${base}_$continent-WebMercator.vrt layers/${base}_${continent}_slope.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
 
 # generate the slopeshade
-nice gdaldem color-relief layers/SRTM3_${continent}_slope.tiff stylesheets/color-ramps/slope-ramp.txt layers/SRTM3_${continent}_slopeshade.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
+nice gdaldem color-relief layers/${base}_${continent}_slope.tiff stylesheets/color-ramps/slope-ramp.txt layers/${base}_${continent}_slopeshade.tiff -of GTiff -co COMPRESS=DEFLATE -co ZLEVEL=9
 
 # we only needed this to generate the slopeshade, so remove it now
-rm -f layers/SRTM3_${continent}_slope.tiff
+rm -f layers/${base}_${continent}_slope.tiff
 
 # add a link to the layers within the stylesheets directory for the mapnik stylesheet
 ln -s -T ../layers stylesheets/layers

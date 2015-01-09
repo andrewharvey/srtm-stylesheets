@@ -7,21 +7,21 @@
 # rights to this work.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-# where the HGT files are at
-base="SRTM3"
+base=$1
+base_lower=`echo "$base" | tr 'A-Z' 'a-z'`
 
-mkdir -p SRTM3_Contour_Tiles/
+mkdir -p ${base}_Contour_Tiles/
 
 interval=10
 
-if [ -z $4 ] ; then
-  echo "Usage: $0 lon0 lon1 lat0 lat1"
+if [ -z $5 ] ; then
+  echo "Usage: $0 SRTM1|SRTM3 lon0 lon1 lat0 lat1"
   exit 1
 else
-  lon0=$1
-  lon1=$2
-  lat0=$3
-  lat1=$4
+  lon0=$2
+  lon1=$3
+  lat0=$4
+  lat1=$5
 fi
 
 if [ $lat0 -gt $lat1 ] ; then
@@ -33,7 +33,7 @@ if [ $lon0 -gt $lon1 ] ; then
   exit 1
 fi
 
-psql -c "DROP TABLE IF EXISTS srtm3;"
+psql -c "DROP TABLE IF EXISTS ${base_lower};"
 
 counter=0
 for lon in `seq $lon0 $lon1` ; do
@@ -50,10 +50,24 @@ for lon in `seq $lon0 $lon1` ; do
     else
         ns='N'
     fi
-    f="${base}/${ns}${lat}${ew}${lon}.hgt"
+    if [ $base == "SRTM1" ] ; then
+        f="${ns}${lat}_${ew}${lon}_1arc_v3.bil"
+        f=`echo $f | tr 'A-Z' 'a-z'`
+        f="${base}/${f}"
+    elif [ $base == "SRTM3" ] ; then
+        f="${base}/${ns}${lat}${ew}${lon}.hgt"
+    else
+        echo "Argument 1 must be either SRTM1 or SRTM3"
+        exit 1
+    fi
+    echo $f
     if [ -e "$f" ] ; then
       counter=$(($counter + 1))
-      b=`basename $f .hgt`
+      if [ $base == "SRTM1" ] ; then
+         b=`basename $f .bil`
+      elif [ $base == "SRTM3" ] ; then
+         b=`basename $f .hgt`
+      fi
       echo $b
 
       working_tile="$f"
@@ -73,10 +87,10 @@ for lon in `seq $lon0 $lon1` ; do
             -a ele \
             -snodata -32768 \
             "$working_tile" \
-            SRTM3_Contour_Tiles/$b.shp
+            ${base}_Contour_Tiles/$b.shp
 
       # remove the tile if it is a temporary one we just created
-      if [ ! -z "${filled_tile+xxx}" -a -e ${filled_tile} ]; then
+      if [ ! -z "${filled_tile+xxx}" -a -e "${filled_tile}" ]; then
         # VAR $filled_tile is SET AND file exists
         rm -f "$filled_tile"
       fi
@@ -85,24 +99,24 @@ for lon in `seq $lon0 $lon1` ; do
       nice ionice -c 3 \
           ogr2ogr \
             -f PostgreSQL \
-            -nln srtm3 \
+            -nln srtm \
             -append \
-            -t_srs 'EPSG:900913' \
+            -t_srs "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs" \
             PG:dbname=$PGDATABASE \
-            "SRTM3_Contour_Tiles/$b.shp"
+            "${base}_Contour_Tiles/$b.shp"
 
       # we don't need the shape file anymore
-      rm -f SRTM3_Contour_Tiles/$b.*
+      rm -f ${base}_Contour_Tiles/$b.*
     fi
   done
 done
 
 if [ $counter -eq 0 ] ; then
-    echo "No suitable SRTM3 tiles were found in ${base}/ for the bounds you specified."
+    echo "No suitable ${base} tiles were found in ${base}/ for the bounds you specified."
 else
-    echo "Imported contours for $counter SRTM3 tiles."
+    echo "Imported contours for $counter ${base} tiles."
 fi
 
-rm -rf SRTM3_Contour_Tiles
+rm -rf ${base}_Contour_Tiles
 
-psql -c "ALTER TABLE srtm3 DROP COLUMN id;"
+psql -c "ALTER TABLE srtm DROP COLUMN id;"
